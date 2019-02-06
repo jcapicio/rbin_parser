@@ -77,13 +77,12 @@ def main():
                         date = f.read(8)
                         if header == b'\x02\x00\x00\x00\x00\x00\x00\x00':
                             filename_length = f.read(4)
-                        del_file.filepath = str(f.read(), 'utf-8').replace('\x00', '').encode('ascii', 'ignore').decode(
-                            'utf-8')
+                        del_file.filepath = str(f.read(), 'utf-8').replace('\x00', '').encode('ascii', 'ignore').decode('utf-8')
                         del_file.date = to_seconds(struct.unpack("<Q", date)[0])
                         del_file.filename = del_file.filepath.split('\\')[-1:][0]
-                        if os.path.isdir(os.path.join(root,del_file.Rfile)):
+                        if os.path.isdir(del_file.Rfile):
                             del_file.type = "dir"
-                        elif os.path.isfile(os.path.join(root,del_file.Rfile)):
+                        elif os.path.isfile(del_file.Rfile):
                             del_file.type = "file"
                         deleted_files.append(del_file)
     elif os.path.isfile(RecycleBin.strip()):
@@ -98,8 +97,7 @@ def main():
                 date = f.read(8)
                 if header == b'\x02\x00\x00\x00\x00\x00\x00\x00':
                     filename_length = f.read(4)
-                del_file.filepath = str(f.read(), 'utf-8').replace('\x00', '').encode('ascii', 'ignore').decode(
-                    'utf-8')
+                del_file.filepath = str(f.read(), 'utf-8').replace('\x00', '').encode('ascii', 'ignore').decode('utf-8')
                 del_file.date = to_seconds(struct.unpack("<Q", date)[0])
                 del_file.filename = del_file.filepath.split('\\')[-1:][0]
                 if os.path.isdir(del_file.Rfile):
@@ -113,22 +111,14 @@ def main():
 
     for del_file in deleted_files:
         if del_file.type == "dir":
-            print ('%s,%s,%s,%s,%s,%s,%s' % (
-            del_file.date, del_file.type,del_file.size, del_file.filepath.strip(), del_file.filename.strip(), os.path.basename(del_file.Ifile),
-            os.path.basename(del_file.Rfile)))
+            print ('%s,%s,%s,%s,%s,%s,%s' % (del_file.date, del_file.type,del_file.size, del_file.filepath.strip(), del_file.filename.strip(), os.path.basename(del_file.Ifile),os.path.basename(del_file.Rfile)))
             if full_display:
-                for root, dir, files in os.walk(os.path.join(RecycleBin, os.path.basename(del_file.Rfile))):
+                for root, dir, files in os.walk(del_file.Rfile):
                     for file in files:
-                        print('%s,%s,%s,%s,%s,%s,%s' % (
-                            del_file.date, "dir content", os.path.getsize(os.path.join(root, file)),
-                            os.path.join(del_file.filepath, file).replace("/", "\\"), file, "", ""))
+                        print('%s,%s,%s,%s,%s,%s,%s' % (del_file.date, "dir content", os.path.getsize(os.path.join(root, file)),os.path.join(del_file.filepath, file).replace("/", "\\"), file, "", ""))
         #elif del_file.type == "file":
         else:
-            print('%s,%s,%s,%s,%s,%s,%s' % (
-                del_file.date, del_file.type, del_file.size, del_file.filepath.strip(), del_file.filename.strip(),
-                os.path.basename(del_file.Ifile),
-                os.path.basename(del_file.Rfile)))
-
+            print('%s,%s,%s,%s,%s,%s,%s' % (del_file.date, del_file.type, del_file.size, del_file.filepath.strip(), del_file.filename.strip(),os.path.basename(del_file.Ifile),os.path.basename(del_file.Rfile)))
 
 if __name__ == '__main__':
     main()
