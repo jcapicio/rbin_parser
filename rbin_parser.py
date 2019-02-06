@@ -117,7 +117,8 @@ def main():
             del_file.date, del_file.type,del_file.size, del_file.filepath.strip(), del_file.filename.strip(), os.path.basename(del_file.Ifile),
             os.path.basename(del_file.Rfile)))
             if full_display:
-                for root,dir,files in os.walk(os.path.join(RecycleBin,del_file.Rfile)):
+                print(RecycleBin)
+                for root, dir, files in os.walk(os.path.join(RecycleBin, os.path.basename(del_file.Rfile_)):
                     for file in files:
                         print('%s,%s,%s,%s,%s,%s,%s' % (
                             del_file.date, "dir content", os.path.getsize(os.path.join(RecycleBin,del_file.Rfile)), os.path.join(del_file.filepath,file).replace("/","\\"), file,"",""))
