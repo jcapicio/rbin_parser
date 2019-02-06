@@ -65,13 +65,12 @@ def main():
     # del_file = None
     if os.path.isdir(RecycleBin.strip()):
         for root, dirs, files in os.walk(RecycleBin):
-        # for root, dirs, files in os.walk("D:\\Training Modules"):
             for file in files:
                 if file[0:2] == '$I':
                     with open(os.path.join(root, file), "rb") as f:
                         del_file = deleted_file()
-                        del_file.Ifile = file
-                        del_file.Rfile = file.replace('$I', '$R')
+                        del_file.Ifile = os.path.join(root, file)
+                        del_file.Rfile = os.path.join(root, file.replace('$I', '$R'))
                         header = f.read(8)
                         size = f.read(8)
                         del_file.size = int.from_bytes(size, byteorder='little')
